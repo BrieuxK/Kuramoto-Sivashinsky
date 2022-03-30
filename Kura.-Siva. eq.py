@@ -37,9 +37,4 @@ for i in range(1,n_t - 1):
     #fftshift
     u[i+1] = np.fft.ifft(np.fft.ifftshift(u_spec[i+1]))
     
-# plot the result
-fig, ax = plt.subplots(figsize=(10,8))
-
-xx, tt = np.meshgrid(x, t)
-cs = ax.contourf(xx, tt, u, cmap=cm.jet)
-fig.colorbar(cs)
+#On affiche nos résultats
