@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+N = 64
+dt = 1e-4
+n_t = int(20/dt)
+L = 2*np.pi
+
+x = np.linspace(0,7,N)
+t = np.linspace(0,20,n_t)
+k = np.arange(-N/2, N/2)
+
+mu0 = L/5
+sig0 = L/20
+
+u = np.zeros((n_t,N))
+u_dft = np.zeros((n_t,N),dtype=complex)
+
+u0 = np.exp(-((x-mu0)**2/(2*sig0**2)))
+u[0] = u0
+
+ft = 1/N * np.fft.fftshift(np.fft.fft(u0))
+u_dft[0] = ft
+
+c = -L/10 * 1j * k 
+for i in range(n_t - 1):
+    u_dft[i+1] = u_dft[i] + dt * c * u_dft[i]
+    u[i+1] = np.fft.ifft(np.fft.ifftshift(u_dft[i+1]))*N
+    
+xx,tt = np.meshgrid(x,t)
+
+plt.plot(x,u[-1,:])
+plt.show()
+plt.contourf(xx,tt,u,cmap = 'jet')
+plt.colorbar()
+
+plt.show()
